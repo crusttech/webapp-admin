@@ -29,6 +29,13 @@
       </span>
     </c-content-header>
 
+    <button
+      class="btn btn-primary shadow-none mb-3"
+      @click="isolatedComponentRedirect"
+    >
+      Redirect
+    </button>
+
     <c-application-editor-info
       :application="application"
       :processing="info.processing"
@@ -127,6 +134,17 @@ export default {
   },
 
   methods: {
+    isolatedComponentRedirect () {
+      this.$router.push({
+        name: 'test',
+        params: {
+          application: this.application,
+          info: this.info,
+          canCreate: this.canCreate,
+        },
+      })
+    },
+
     fetchApplication () {
       this.incLoader()
 
