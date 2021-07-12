@@ -1,80 +1,77 @@
 export default {
-  navItem: { label: 'Settings' },
-  editor: {
-    title: 'System settings',
-    auth: {
-      title: 'Authentication',
-      internal: {
-        title: 'Internal',
-        enabled: 'Internal authentication enabled',
-        'password-reset': { enabled: 'Password reset enabled' },
-        signup: {
-          enabled: 'Signup enabled',
-          'email-confirmation-required': 'Signup email confirmation required'
-        }
+  navItem: { label: 'Templates' },
+  list: {
+    title: 'Templates',
+    new: 'New',
+    permissions: 'Permissions',
+    yaml: 'YAML',
+    loading: 'Loading templates',
+    numFound: `{{count}} template found`,
+    numFound_plural: `{{count}} templates found`,
+    filterForm: {
+      handle: {
+        label: 'Filter templates list',
+        placeholder: 'Filter templates by handle'
       },
-      mfa: {
-        title: 'Multi-factor authentication',
-        emailOTP: {
-          enabled: 'Allow users to use one-time-password over email',
-          enforced: 'Force users to use one-time-password over email',
-          expires: {
-            label: 'Valid for',
-            description: 'How long will password be valid before it expires.'
-          }
-        },
-        TOTP: {
-          enabled: 'Allow users to use time based one-time-password',
-          enforced: 'Force users to use one-time-password over email',
-          issuer: {
-            label: 'Issuer',
-            description: 'Issuer name will be send to authenticator app when user configures it.'
-          }
-        }
-      },
-      mail: {
-        title: 'Authentication email sender mail',
-        'validate-email': 'Please enter valid email address.',
-        'from-address': 'Sender\'s address',
-        'from-name': 'Sender\'s name'
-      },
-      url: 'URL'
+      excluded: { label: 'Without' },
+      inclusive: { label: 'Including' },
+      exclusive: { label: 'Only' },
+      deleted: { label: 'deleted templates' }
     },
-    external: {
-      title: 'External Authentication Providers',
+    columns: {
+      meta: { short: 'Short name' },
       handle: 'Handle',
-      external: 'External',
-      enabled: 'Enable external authentication',
-      'client-key': 'Client key',
-      secret: 'Secret',
-      issuer: 'OIDC Issuer URL',
-      'provider-enabled': 'Enable this external authentication provider',
-      certificate: 'Certificate',
-      oidc: 'OpenID Connect',
-      google: 'Google',
-      facebook: 'Facebook',
-      github: 'GitHub',
-      linkedin: 'LinkedIn',
-      saml: {
-        title: 'SAML',
-        cert: 'Certificate public key',
-        'cert-key': 'Certificate private key',
-        idp: {
-          title: 'Identity provider',
-          url: 'URL',
-          'ident-name': 'Identity payload name',
-          'ident-handle': 'Identity payload handle',
-          'ident-identifier': 'Identity payload default identifier'
+      language: 'Language',
+      createdAt: 'Created',
+      actions: ''
+    }
+  },
+  editor: {
+    title: 'Edit template',
+    new: 'New',
+    permissions: 'Permissions',
+    info: {
+      title: 'Basic information',
+      handle: 'Handle',
+      type: 'Template type',
+      partial: 'Partial template',
+      partialDescription: 'Partial templates may be used inside other templates such as headers and footers. Partial templates may not be used on their own.',
+      meta: {
+        short: 'Short name',
+        description: 'Description'
+      },
+      contentType: {
+        text_html: 'HTML',
+        text_plain: 'Plain text'
+      },
+      delete: 'Delete',
+      undelete: 'Undelete',
+      deletedAt: 'Deleted at',
+      updatedAt: 'Updated at',
+      createdAt: 'Created at'
+    },
+    content: {
+      title: 'Template content',
+      partial: 'Partial template',
+      toolbox: {
+        title: 'Toolbox',
+        partials: 'Partials',
+        snippets: {
+          label: 'Snippets',
+          interpolate: 'Interpolate value',
+          iterator: 'Iterate over a set',
+          funcCall: 'Call a function'
         },
-        desc: {
-          cert: 'Content will be minimized',
-          'cert-key': 'Content will be minimized',
-          idp: {
-            'ident-name': 'Name field coming from idp',
-            'ident-handle': 'Handle field coming from idp',
-            'ident-identifier': 'Determines by which field do we match, usually email'
-          }
+        samples: {
+          label: 'Samples',
+          defaultHTML: 'Default HTML'
         }
+      },
+      editor: { unsupported: 'Unsupported editor' },
+      preview: {
+        title: 'Preview output',
+        html: 'Preview HTML',
+        pdf: 'Preview PDF'
       }
     }
   }
