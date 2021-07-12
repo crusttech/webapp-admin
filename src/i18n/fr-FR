@@ -1,55 +1,39 @@
 export default {
-  navItem: { label: 'Workflows' },
+  navItem: { label: 'Permissions' },
   list: {
-    title: 'Workflows',
-    new: 'New',
-    permissions: 'Permissions',
-    yaml: 'YAML',
-    loading: 'Loading workflows',
-    numFound: `{{count}} workflow found`,
-    numFound_plural: `{{count}} workflows found`,
-    filterForm: {
-      query: {
-        label: 'Filter workflows list',
-        placeholder: 'Filter workflows by name'
+    title: 'Automation permissions',
+    rules: {
+      title: 'List of rules',
+      loading: 'Loading permissions',
+      notAllowed: 'Not allowed to set permissions',
+      add: 'Add role',
+      addRole: 'Add new role',
+      noRole: 'No role selected',
+      tip1: 'Click on permission/role cell to allow a specific operation',
+      tip2: 'Use Alt-Click to set explicit deny on operation',
+      submit: 'Submit',
+      component: {
+        type: { label: 'Automation' },
+        operations: {
+          grant: 'Grant permissions on automation',
+          triggersSearch: 'Search triggers',
+          sessionsSearch: 'Search sessions',
+          workflowCreate: 'Create new workflow',
+          workflowsSearch: 'Search workflows'
+        }
       },
-      excluded: { label: 'Without' },
-      inclusive: { label: 'Including' },
-      exclusive: { label: 'Only' },
-      deleted: { label: 'deleted workflows' }
-    },
-    columns: {
-      handle: 'Name',
-      createdAt: 'Created',
-      enabled: 'Enabled',
-      actions: ''
-    }
-  },
-  editor: {
-    title: 'Edit workflow',
-    new: 'New',
-    permissions: 'Permissions',
-    info: {
-      title: 'Basic information',
-      id: 'ID',
-      name: 'Name',
-      handle: 'Handle',
-      enabled: 'Enabled',
-      openBuilder: 'Open builder',
-      delete: 'Delete',
-      undelete: 'Undelete',
-      deletedAt: 'Deleted at',
-      updatedAt: 'Updated at',
-      createdAt: 'Created at'
-    },
-    triggers: {
-      title: 'Triggers',
-      columns: {
-        resourceType: 'Resource',
-        eventType: 'Event',
-        constraints: 'Constraints'
-      },
-      and: 'and'
+      workflow: {
+        type: { label: 'Workflow' },
+        operations: {
+          read: 'Read workflow',
+          update: 'Update workflow',
+          delete: 'Delete workflow',
+          undelete: 'Undelete workflow',
+          execute: 'Execute workflow',
+          triggersManage: 'Manage workflow triggers',
+          sessionsManage: 'Manage workflow sessions'
+        }
+      }
     }
   }
 };
