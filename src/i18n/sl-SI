@@ -1,48 +1,55 @@
 export default {
-  navItem: { label: 'Sessions' },
+  navItem: { label: 'Workflows' },
   list: {
-    title: 'Sessions',
-    loading: 'Loading sessions',
-    numFound: `{{count}} session found`,
-    numFound_plural: `{{count}} sessions found`,
+    title: 'Workflows',
+    new: 'New',
+    permissions: 'Permissions',
+    yaml: 'YAML',
+    loading: 'Loading workflows',
+    numFound: `{{count}} workflow found`,
+    numFound_plural: `{{count}} workflows found`,
     filterForm: {
+      query: {
+        label: 'Filter workflows list',
+        placeholder: 'Filter workflows by name'
+      },
       excluded: { label: 'Without' },
       inclusive: { label: 'Including' },
       exclusive: { label: 'Only' },
-      inProgress: { label: 'completed sessions' },
-      all: { label: 'All' },
-      started: { label: 'Started' },
-      prompted: { label: 'Prompted' },
-      suspended: { label: 'Suspended' },
-      failed: { label: 'Failed' },
-      completed: { label: 'Completed' },
-      sessions: { label: 'sessions' }
+      deleted: { label: 'deleted workflows' }
     },
     columns: {
-      sessionID: 'SessionID',
-      workflowID: 'WorkflowID',
-      status: 'Status',
-      eventType: 'Event type',
-      createdAt: 'Created At',
+      handle: 'Name',
+      createdAt: 'Created',
+      enabled: 'Enabled',
       actions: ''
     }
   },
   editor: {
-    title: 'Session',
+    title: 'Edit workflow',
+    new: 'New',
+    permissions: 'Permissions',
     info: {
       title: 'Basic information',
       id: 'ID',
-      workflowID: 'WorkflowID',
-      resourceType: 'Resource type',
-      eventType: 'Event type',
-      status: 'Status',
-      error: 'Error',
+      name: 'Name',
+      handle: 'Handle',
+      enabled: 'Enabled',
+      openBuilder: 'Open builder',
       delete: 'Delete',
+      undelete: 'Undelete',
       deletedAt: 'Deleted at',
-      completedAt: 'Completed at',
-      createdAt: 'Created at',
-      createdByUserID: 'Created by - ID',
-      createdByUserName: 'Created by - Name'
+      updatedAt: 'Updated at',
+      createdAt: 'Created at'
+    },
+    triggers: {
+      title: 'Triggers',
+      columns: {
+        resourceType: 'Resource',
+        eventType: 'Event',
+        constraints: 'Constraints'
+      },
+      and: 'and'
     }
   }
 };
