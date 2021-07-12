@@ -1,79 +1,97 @@
 export default {
-  navItem: { label: 'Settings' },
-  editor: {
-    title: 'System settings',
-    auth: {
-      title: 'Authentication',
-      internal: {
-        title: 'Internal',
-        enabled: 'Internal authentication enabled',
-        'password-reset': { enabled: 'Password reset enabled' },
-        signup: {
-          enabled: 'Signup enabled',
-          'email-confirmation-required': 'Signup email confirmation required'
+  navItem: { label: 'Permissions' },
+  list: {
+    title: 'System permissions',
+    rules: {
+      title: 'List of rules',
+      loading: 'Loading permissions',
+      notAllowed: 'Not allowed to set permissions',
+      add: 'Add role',
+      addRole: 'Add new role',
+      noRole: 'No role selected',
+      tip1: 'Click on permission/role cell to allow a specific operation',
+      tip2: 'Use Alt-Click to set explicit deny on operation',
+      submit: 'Submit',
+      component: {
+        type: { label: 'System service' },
+        operations: {
+          grant: 'Grant permission on system service',
+          actionLogRead: 'Access action log',
+          roleCreate: 'Create new role',
+          rolesSearch: 'List and search roles',
+          userCreate: 'Create new user',
+          usersSearch: 'List and search users',
+          applicationCreate: 'Create new application',
+          applicationsSearch: 'List and search applications',
+          applicationFlagSelf: 'Can pin application for themselves',
+          applicationFlagGlobal: 'Can pin application for everyone',
+          authClientCreate: 'Create new auth client',
+          authClientsSearch: 'List and search auth clients',
+          queueCreate: 'Create new messaging queue',
+          queuesSearch: 'List and search messaging queues',
+          templateCreate: 'Create new template',
+          templatesSearch: 'List and search templates',
+          settingsRead: 'Access all settings',
+          settingsManage: 'Manage all settings',
+          reminderAssign: 'Allow reminder assignment'
         }
       },
-      mfa: {
-        title: 'Multi-factor authentication',
-        emailOTP: {
-          enabled: 'Allow users to use one-time-password over email',
-          enforced: 'Force users to use one-time-password over email',
-          expires: {
-            label: 'Valid for',
-            description: 'How long will password be valid before it expires.'
-          }
-        },
-        TOTP: {
-          enabled: 'Allow users to use time based one-time-password',
-          enforced: 'Force users to use one-time-password over email',
-          issuer: {
-            label: 'Issuer',
-            description: 'Issuer name will be send to authenticator app when user configures it.'
-          }
+      role: {
+        type: { label: 'Roles' },
+        operations: {
+          read: 'Read any role',
+          update: 'Update any role',
+          delete: 'Delete any role',
+          membersManage: 'Manage members for any role'
         }
       },
-      mail: {
-        title: 'Authentication email sender mail',
-        'validate-email': 'Please enter valid email address.',
-        'from-address': 'Sender\'s address',
-        'from-name': 'Sender\'s name'
+      user: {
+        type: { label: 'Users' },
+        operations: {
+          read: 'Read any user',
+          update: 'Update any user',
+          delete: 'Delete any user',
+          suspend: 'Suspend any user',
+          unsuspend: 'Unsuspend any user',
+          emailUnmask: 'Show email details',
+          nameUnmask: 'Show name details',
+          impersonate: 'Impersonate any user'
+        }
       },
-      url: 'URL'
-    },
-    external: {
-      title: 'External Authentication Providers',
-      handle: 'Handle',
-      external: 'External',
-      enabled: 'Enable external authentication',
-      'client-key': 'Client key',
-      secret: 'Secret',
-      issuer: 'OIDC Issuer URL',
-      'provider-enabled': 'Enable this external authentication provider',
-      certificate: 'Certificate',
-      oidc: 'OpenID Connect',
-      google: 'Google',
-      facebook: 'Facebook',
-      github: 'GitHub',
-      linkedin: 'LinkedIn',
-      saml: {
-        title: 'SAML',
-        cert: 'Certificate public key',
-        'cert-key': 'Certificate private key',
-        idp: {
-          title: 'Identity provider',
-          url: 'URL',
-          'ident-name': 'Identity payload name',
-          'ident-handle': 'Identity payload handle',
-          'ident-identifier': 'Identity payload default identifier'
-        },
-        desc: {
-          cert: 'Content will be minimized',
-          'cert-key': 'Content will be minimized',
-          idp: {
-            'ident-name': 'Name field coming from idp',
-            'ident-handle': 'Handle field coming from idp',
-            'ident-identifier': 'Determines by which field do we match, usually email'
-          }
+      application: {
+        type: { label: 'Applications' },
+        operations: {
+          read: 'Access any application',
+          update: 'Update any application',
+          delete: 'Delete any application'
+        }
+      },
+      template: {
+        type: { label: 'Templates' },
+        operations: {
+          read: 'Read any template',
+          update: 'Update any template',
+          delete: 'Delete any template',
+          render: 'Render any template'
+        }
+      },
+      authClient: {
+        type: { label: 'Auth clients' },
+        operations: {
+          read: 'Read any client',
+          update: 'Update any client',
+          delete: 'Delete any client',
+          authorize: 'Authorize any client'
+        }
+      },
+      queue: {
+        type: { label: 'Messaging queues' },
+        operations: {
+          read: 'Read any queue',
+          update: 'Update any queue',
+          delete: 'Delete any queue',
+          queueRead: 'Read messages from queue',
+          queueWrite: 'Write messages to queue'
         }
       }
     }
