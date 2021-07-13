@@ -4,11 +4,11 @@
       <b-row class="mb-5">
         <b-col cols="3">
           <aside class="h-100">
-            <p
-              class="font-weight-bold ml-3"
+            <h4
+              class="font-weight-bold"
             >
-              Catalogue
-            </p>
+              Component Catalogue
+            </h4>
             <ul
               v-for="(value, key, index) in components"
               :key="index"
@@ -18,68 +18,191 @@
                 v-if="index !== Object.keys(components).length - 1"
                 class="ml-list mt-0"
               >
-                {{ value.name }}
+                - {{ value.name }}
               </li>
             </ul>
           </aside>
         </b-col>
-        <b-col cols="8">
+        <b-col
+          v-if="!isEmptyFormPopulated && !isFullFormPopulated"
+          cols="8"
+        >
           <c-application-editor-info
-            :application="application"
-            :processing="info.processing"
-            :success="info.success"
-            :can-create="canCreate"
+            :application="appData.application"
+            :processing="appData.info.processing"
+            :success="appData.info.success"
+            :can-create="appData.canCreate.canCreate"
+            @submit="onInfoSubmit"
+            @delete="onDelete"
+          />
+        </b-col>
+        <b-col
+          v-if="isEmptyFormPopulated && !isFullFormPopulated"
+          cols="8"
+        >
+          <c-application-editor-info
+            :application="emptyForm.application"
+            :processing="emptyForm.info.processing"
+            :success="emptyForm.info.success"
+            :can-create="emptyForm.canCreate.canCreate"
+            @submit="onInfoSubmit"
+            @delete="onDelete"
+          />
+        </b-col>
+        <b-col
+          v-if="isFullFormPopulated && !isEmptyFormPopulated"
+          cols="8"
+        >
+          <c-application-editor-info
+            :application="fullForm.application"
+            :processing="fullForm.info.processing"
+            :success="fullForm.info.success"
+            :can-create="fullForm.canCreate.canCreate"
             @submit="onInfoSubmit"
             @delete="onDelete"
           />
         </b-col>
       </b-row>
-      <b-row>
+      <b-row
+        class="mw-50"
+      >
         <b-col>
-          <h3>Preset Controls</h3>
-          <ul
-            v-for="(value, key) in [application, info]"
-            :key="key"
-            style="list-style-type: none"
-            class="m-ul"
+          <h3>Pre-set Controls</h3>
+          <h5
+            class="forms mb-1"
+            @click="populateEmptyForm"
           >
-            <li
-              v-for="(v, k) in value"
-              :key="k"
+            - Generate Empty Form
+          </h5>
+          <div
+            v-if="isEmptyFormPopulated"
+            class="form-container pl-3 pt-2"
+          >
+            <ul
+              v-for="(value, key) in emptyForm"
+              :key="key"
+              class="m-ul"
             >
-              <label>{{ k }}:</label>
-              <span
-                class="text-secondary"
+              <h6>{{ key }}: {</h6>
+              <li
+                v-for="(v, k, i) in value"
+                :key="i"
               >
-                {{ v }}
-              </span>
-            </li>
-          </ul>
-          <label>canCreate:</label>
-          <span class="text-secondary"> {{ canCreate }}</span>
+                <label
+                  class="pl-2"
+                >
+                  {{ k }}:
+                </label>
+                <span
+                  class="text-secondary"
+                >
+                  {{ v }}
+                </span>
+              </li>
+              <h6>}</h6>
+            </ul>
+          </div>
+          <h5
+            class="forms mb-1"
+            @click="populateFullForm"
+          >
+            - Generate Full Form
+          </h5>
+          <div
+            v-if="isFullFormPopulated"
+            class="form-container pl-3 pt-2 mb-3"
+          >
+            <ul
+              v-for="(value, key) in fullForm"
+              :key="key"
+              class="m-ul"
+            >
+              <h6>{{ key }}: {</h6>
+              <li
+                v-for="(v, k, i) in value"
+                :key="i"
+              >
+                <label
+                  class="pl-2"
+                >{{ k }}:</label>
+                <span
+                  class="text-secondary"
+                >
+                  {{ v }}
+                </span>
+              </li>
+              <h6>}</h6>
+            </ul>
+          </div>
         </b-col>
         <b-col>
           <h3>Controls</h3>
-          <ul
-            v-for="(value, key) in [application, info]"
-            :key="key"
-            style="list-style-type: none"
-            class="m-ul"
+          <div
+            v-if="!isEmptyFormPopulated && !isFullFormPopulated"
           >
-            <li
-              v-for="(v, k) in value"
-              :key="k"
+            <ul
+              v-for="(value, key) in appData"
+              :key="key"
+              style="list-style: none"
+              class="m-ul"
             >
-              <label>{{ k }}:</label>
-              <span
-                class="text-secondary"
+              <li
+                v-for="(v, k) in value"
+                :key="k"
               >
-                {{ v }}
-              </span>
-            </li>
-          </ul>
-          <label>canCreate:</label>
-          <span class="text-secondary"> {{ canCreate }}</span>
+                <label>{{ k }}:</label>
+                <input
+                  class="ml-2 pl-1"
+                  :value="v"
+                  @input="update('name', $event.target.value)"
+                >
+              </li>
+            </ul>
+          </div>
+          <div
+            v-if="isEmptyFormPopulated && !isFullFormPopulated"
+          >
+            <ul
+              v-for="(value, key) in emptyForm"
+              :key="key"
+              style="list-style: none"
+              class="m-ul"
+            >
+              <li
+                v-for="(v, k) in value"
+                :key="k"
+              >
+                <label>{{ k }}:</label>
+                <input
+                  class="ml-2 pl-1"
+                  :value="v"
+                  @input="update('name', $event.target.value)"
+                >
+              </li>
+            </ul>
+          </div>
+          <div
+            v-if="isFullFormPopulated && !isEmptyFormPopulated"
+          >
+            <ul
+              v-for="(value, key) in fullForm"
+              :key="key"
+              style="list-style: none"
+              class="m-ul"
+            >
+              <li
+                v-for="(v, k) in value"
+                :key="k"
+              >
+                <label>{{ k }}:</label>
+                <input
+                  class="ml-2 pl-1"
+                  :value="v"
+                  @input="update('name', $event.target.value)"
+                >
+              </li>
+            </ul>
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -89,27 +212,59 @@
 <script>
 import CApplicationEditorInfo from './CApplicationEditorInfo.vue'
 
-const appData = {
-  applicationID: '234900176853008386',
-  canDeleteApplication: true,
-  canGrant: true,
-  canUpdateApplication: true,
-  createdAt: '2021-06-09T12:03:36Z',
-  enabled: true,
-  name: 'Low Code',
-  ownerID: 0,
-  unify: {
-    config: '',
-    icon: '/applications/low-code-platform.png',
-    iconID: '0',
-    listed: true,
-    logo: '/applications/low-code-platform.png',
-    logoID: '0',
-    name: 'Low Code',
-    pinned: false,
-    url: '/compose',
+const emptyForm = {
+  application: {
+    applicationID: '0',
+    canDeleteApplication: false,
+    canUpdateApplication: false,
+    createdAt: '',
+    enabled: false,
+    name: '',
   },
-  weight: 1,
+  info: {
+    processing: false,
+    success: false,
+  },
+  canCreate: {
+    canCreate: false,
+  },
+}
+
+const fullForm = {
+  application: {
+    applicationID: '234900176853008386',
+    canDeleteApplication: false,
+    canUpdateApplication: true,
+    createdAt: '2021-06-09T12:03:36Z',
+    enabled: true,
+    name: 'Low Code',
+  },
+  info: {
+    processing: false,
+    success: false,
+  },
+  canCreate: {
+    canCreate: true,
+  },
+}
+
+const appData = {
+  application: {
+    applicationID: '234900176853008386',
+    canDeleteApplication: false,
+    canGrant: true,
+    canUpdateApplication: true,
+    createdAt: '2021-06-09T12:03:36Z',
+    enabled: true,
+    name: 'Low Code',
+  },
+  info: {
+    processing: false,
+    success: false,
+  },
+  canCreate: {
+    canCreate: true,
+  },
 }
 
 export default {
@@ -120,17 +275,19 @@ export default {
 
   data () {
     return {
-      application: this.$route.params.application || appData,
-      info: this.$route.params.info || { processing: false, success: false },
-      canCreate: this.$route.params.canCreate || false,
+      appData,
       components: this.$options.components,
+      isEmptyFormPopulated: false,
+      isFullFormPopulated: false,
+      emptyForm,
+      fullForm,
     }
   },
 
   computed: {
     app: {
       get () {
-        return [this.application]
+        return this.application
       },
 
       set (a) {
@@ -140,10 +297,27 @@ export default {
   },
 
   created () {
-    console.log(this.data)
+    console.log()
   },
 
   methods: {
+    update (key, value) {
+      this.$emit('input', { ...this.value, [key]: value })
+    },
+    populateEmptyForm () {
+      this.isEmptyFormPopulated = !this.isEmptyFormPopulated
+
+      if (this.isFullFormPopulated) {
+        this.isFullFormPopulated = !this.isFullFormPopulated
+      }
+    },
+    populateFullForm () {
+      this.isFullFormPopulated = !this.isFullFormPopulated
+
+      if (this.isEmptyFormPopulated) {
+        this.isEmptyFormPopulated = !this.isEmptyFormPopulated
+      }
+    },
     onInfoSubmit (application) {
       console.log('triggerred onInfoSubmit')
       console.log(application)
@@ -153,19 +327,35 @@ export default {
     },
     editApp (a) {
       console.log(a)
-      // this.$set(r, 'dirty', true)
     },
   },
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .ml-list {
-  margin-left: -10px;
+  margin-left: -30px;
 }
 
 .m-ul {
+  list-style-type: none;
   margin-left: -40px;
   margin-bottom: -3px;
+}
+
+.forms {
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 5px 0 5px 5px;
+
+  &:hover {
+    background-color: rgb(228, 228, 228);
+  }
+}
+
+.form-container {
+  background-color: rgb(231, 231, 231);
+  border-radius: 5px;
+  margin-bottom: 5px;
 }
 </style>
