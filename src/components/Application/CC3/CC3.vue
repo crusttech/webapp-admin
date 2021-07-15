@@ -24,40 +24,10 @@
           </aside>
         </b-col>
         <b-col
-          v-if="!isEmptyFormPopulated && !isFullFormPopulated"
           cols="8"
         >
           <c-application-editor-info
-            :application="appData.application"
-            :processing="appData.info.processing"
-            :success="appData.info.success"
-            :can-create="appData.otherProperties.canCreate"
-            @submit="onInfoSubmit"
-            @delete="onDelete"
-          />
-        </b-col>
-        <b-col
-          v-if="isEmptyFormPopulated && !isFullFormPopulated"
-          cols="8"
-        >
-          <c-application-editor-info
-            :application="emptyForm.application"
-            :processing="emptyForm.info.processing"
-            :success="emptyForm.info.success"
-            :can-create="emptyForm.otherProperties.canCreate"
-            @submit="onInfoSubmit"
-            @delete="onDelete"
-          />
-        </b-col>
-        <b-col
-          v-if="isFullFormPopulated && !isEmptyFormPopulated"
-          cols="8"
-        >
-          <c-application-editor-info
-            :application="fullForm.application"
-            :processing="fullForm.info.processing"
-            :success="fullForm.info.success"
-            :can-create="fullForm.otherProperties.canCreate"
+            v-bind="props"
             @submit="onInfoSubmit"
             @delete="onDelete"
           />
@@ -71,307 +41,29 @@
         />
         <b-col>
           <h3>Pre-set Controls</h3>
-          <h5
-            class="forms mb-1"
-            @click="populateEmptyForm"
-          >
-            - Generate Empty Form
-          </h5>
-          <div
-            v-if="isEmptyFormPopulated"
-            class="form-container pl-3 pt-2"
-          >
-            <ul
-              v-for="(value, key) in emptyForm"
-              :key="key"
-              class="m-ul h5"
+
+          <ul>
+            <li
+              v-for="(s) in scenarios"
+              @click="props=s.props"
             >
-              <h5>{{ key }}: {</h5>
-              <li
-                v-for="(v, k, i) in value"
-                :key="i"
-              >
-                <div
-                  v-if="!isPropertyClicked"
-                >
-                  <label
-                    class="pl-2"
-                  >
-                    {{ k }}:
-                  </label>
-                  <span
-                    class="text-secondary"
-                    @click="editProperty"
-                  >
-                    {{ v }}
-                  </span>
-                </div>
-                <div
-                  v-else
-                >
-                  <div
-                    v-if="typeof(v) === 'boolean'"
-                  >
-                    <label
-                      class="h5"
-                    >
-                      {{ k }}:
-                    </label>
-                    <button
-                      class="btn btn-light text-white ml-2 mb-2"
-                      style="background-color: rgb(175, 175, 175)"
-                      :value="v"
-                      @click="update(value, k, v)"
-                    >
-                      {{ v }}
-                    </button>
-                  </div>
-                  <div
-                    v-else
-                  >
-                    <label
-                      class="h5"
-                    >
-                      {{ k }}:
-                    </label>
-                    <input
-                      class="ml-2 pl-1"
-                      :value="v"
-                      @input="update(value, k, $event.target.value)"
-                    >
-                  </div>
-                </div>
-              </li>
-              <h5>}</h5>
-            </ul>
-          </div>
-          <h5
-            class="forms mb-1"
-            @click="populateFullForm"
-          >
-            - Generate Full Form
-          </h5>
-          <div
-            v-if="isFullFormPopulated"
-            class="form-container pl-3 pt-2 mb-3"
-          >
-            <ul
-              v-for="(value, key) in fullForm"
-              :key="key"
-              class="m-ul h5"
-            >
-              <h5>{{ key }}: {</h5>
-              <li
-                v-for="(v, k, i) in value"
-                :key="i"
-              >
-                <div
-                  v-if="!isPropertyClicked"
-                >
-                  <label
-                    class="pl-2"
-                  >
-                    {{ k }}:
-                  </label>
-                  <span
-                    class="text-secondary"
-                    @click="editProperty"
-                  >
-                    {{ v }}
-                  </span>
-                </div>
-                <div
-                  v-else
-                >
-                  <div
-                    v-if="typeof(v) === 'boolean'"
-                  >
-                    <label
-                      class="h5"
-                    >
-                      {{ k }}:
-                    </label>
-                    <button
-                      class="btn btn-light text-white ml-2 mb-2"
-                      style="background-color: rgb(175, 175, 175)"
-                      :value="v"
-                      @click="update(value, k, v)"
-                    >
-                      {{ v }}
-                    </button>
-                  </div>
-                  <div
-                    v-else
-                  >
-                    <label
-                      class="h5"
-                    >
-                      {{ k }}:
-                    </label>
-                    <input
-                      class="ml-2 pl-1"
-                      :value="v"
-                      @input="update(value, k, $event.target.value)"
-                    >
-                  </div>
-                </div>
-              </li>
-              <h5>}</h5>
-            </ul>
-          </div>
+              {{ s.label }}
+            </li>
+          </ul>
         </b-col>
         <b-col>
           <h3>Controls</h3>
-          <div
-            v-if="!isEmptyFormPopulated && !isFullFormPopulated"
+
+          <b-form-group
+            v-for="(c) in controls"
+            :label="c.label"
           >
-            <ul
-              v-for="(value, key) in appData"
-              :key="key"
-              style="list-style: none"
-              class="m-ul"
-            >
-              <h5>{{ key }}: {</h5>
-              <li
-                v-for="(v, k) in value"
-                :key="k"
-                class="mb-1 pl-2"
-              >
-                <div
-                  v-if="typeof(v) === 'boolean'"
-                >
-                  <label
-                    class="h5"
-                  >
-                    {{ k }}:
-                  </label>
-                  <button
-                    class="btn btn-light text-white ml-2 mb-2"
-                    style="background-color: rgb(175, 175, 175)"
-                    :value="v"
-                    @click="update(value, k, v)"
-                  >
-                    {{ v }}
-                  </button>
-                </div>
-                <div
-                  v-else
-                >
-                  <label
-                    class="h5"
-                  >
-                    {{ k }}:
-                  </label>
-                  <input
-                    class="ml-2 pl-1"
-                    :value="v"
-                    @input="update(value, k, $event.target.value)"
-                  >
-                </div>
-              </li>
-              <h5>}</h5>
-            </ul>
-          </div>
-          <div
-            v-if="isEmptyFormPopulated && !isFullFormPopulated"
-          >
-            <ul
-              v-for="(value, key) in emptyForm"
-              :key="key"
-              style="list-style: none"
-              class="m-ul"
-            >
-              <h5>{{ key }}: {</h5>
-              <li
-                v-for="(v, k) in value"
-                :key="k"
-                class="mb-1 pl-2"
-              >
-                <div
-                  v-if="typeof(v) === 'boolean'"
-                >
-                  <label
-                    class="h5"
-                  >
-                    {{ k }}:
-                  </label>
-                  <button
-                    class="btn btn-light text-white ml-2 mb-2"
-                    style="background-color: rgb(175, 175, 175)"
-                    :value="v"
-                    @click="update(value, k, v)"
-                  >
-                    {{ v }}
-                  </button>
-                </div>
-                <div
-                  v-else
-                >
-                  <label
-                    class="h5"
-                  >
-                    {{ k }}:
-                  </label>
-                  <input
-                    class="ml-2 pl-1"
-                    :value="v"
-                    @input="update(value, k, $event.target.value)"
-                  >
-                </div>
-              </li>
-              <h5>}</h5>
-            </ul>
-          </div>
-          <div
-            v-if="isFullFormPopulated && !isEmptyFormPopulated"
-          >
-            <ul
-              v-for="(value, key) in fullForm"
-              :key="key"
-              style="list-style: none"
-              class="m-ul"
-            >
-              <h5>{{ key }}: {</h5>
-              <li
-                v-for="(v, k) in value"
-                :key="k"
-                class="mb-1 pl-2"
-              >
-                <div
-                  v-if="typeof(v) === 'boolean'"
-                >
-                  <label
-                    class="h5"
-                  >
-                    {{ k }}:
-                  </label>
-                  <button
-                    class="btn btn-light text-white ml-2 mb-2"
-                    style="background-color: rgb(175, 175, 175)"
-                    :value="v"
-                    @click="update(value, k, v)"
-                  >
-                    {{ v }}
-                  </button>
-                </div>
-                <div
-                  v-else
-                >
-                  <label
-                    class="h5"
-                  >
-                    {{ k }}:
-                  </label>
-                  <input
-                    class="ml-2 pl-1"
-                    :value="v"
-                    @input="update(value, k, $event.target.value)"
-                  >
-                </div>
-              </li>
-              <h5>}</h5>
-            </ul>
-          </div>
+            <b-form-input
+              @change="c.handle(props, value)"
+            />
+          </b-form-group>
+
+          {{ controls }}
         </b-col>
       </b-row>
     </b-container>
@@ -390,9 +82,13 @@ export default {
 
   data () {
     return {
-      emptyForm: data.emptyForm,
-      fullForm: data.fullForm,
-      appData: data.appData,
+      props: data.fullForm,
+      scenarios: data.scenarios,
+      controls: data.controls,
+
+      // emptyForm: data.emptyForm,
+      // appData: data.appData,
+
       components: this.$options.components,
       isEmptyFormPopulated: false,
       isFullFormPopulated: false,
