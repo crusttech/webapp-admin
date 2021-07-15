@@ -66,6 +66,9 @@
       <b-row
         class="mw-50"
       >
+        <b-col
+          cols="3"
+        />
         <b-col>
           <h3>Pre-set Controls</h3>
           <h5
@@ -228,10 +231,11 @@
               style="list-style: none"
               class="m-ul"
             >
+              <h5>{{ key }}: {</h5>
               <li
                 v-for="(v, k) in value"
                 :key="k"
-                class="mb-1"
+                class="mb-1 pl-2"
               >
                 <div
                   v-if="typeof(v) === 'boolean'"
@@ -265,6 +269,7 @@
                   >
                 </div>
               </li>
+              <h5>}</h5>
             </ul>
           </div>
           <div
@@ -276,10 +281,11 @@
               style="list-style: none"
               class="m-ul"
             >
+              <h5>{{ key }}: {</h5>
               <li
                 v-for="(v, k) in value"
                 :key="k"
-                class="mb-1"
+                class="mb-1 pl-2"
               >
                 <div
                   v-if="typeof(v) === 'boolean'"
@@ -313,6 +319,7 @@
                   >
                 </div>
               </li>
+              <h5>}</h5>
             </ul>
           </div>
           <div
@@ -324,10 +331,11 @@
               style="list-style: none"
               class="m-ul"
             >
+              <h5>{{ key }}: {</h5>
               <li
                 v-for="(v, k) in value"
                 :key="k"
-                class="mb-1"
+                class="mb-1 pl-2"
               >
                 <div
                   v-if="typeof(v) === 'boolean'"
@@ -361,6 +369,7 @@
                   >
                 </div>
               </li>
+              <h5>}</h5>
             </ul>
           </div>
         </b-col>
@@ -370,83 +379,25 @@
 </template>
 
 <script>
-import CApplicationEditorInfo from './CApplicationEditorInfo.vue'
-
-const emptyForm = {
-  application: {
-    applicationID: '0',
-    createdAt: '0000-00-00T00:00:00Z',
-    enabled: false,
-    name: '',
-  },
-  info: {
-    processing: false,
-    success: false,
-  },
-  otherProperties: {
-    canCreate: false,
-  },
-}
-
-const fullForm = {
-  application: {
-    applicationID: '234900176853008386',
-    createdAt: '2021-06-09T12:03:36Z',
-    enabled: true,
-    name: 'Low Code',
-  },
-  info: {
-    processing: false,
-    success: false,
-  },
-  otherProperties: {
-    canCreate: true,
-  },
-}
-
-const appData = {
-  // can hide delete button
-  application: {
-    // can hide delete button
-    applicationID: '234900176853008386',
-    createdAt: '2021-06-09T12:03:36Z',
-    enabled: false,
-    name: 'Low Code',
-  },
-  info: {
-    processing: false,
-    success: false,
-  },
-  otherProperties: {
-    // for submit button
-    canCreate: true,
-  },
-}
+import CApplicationEditorInfo from '../CApplicationEditorInfo.vue'
+import data from './formData'
 
 export default {
-  name: 'CSurprise',
+  name: 'CC3',
   components: {
     CApplicationEditorInfo,
   },
 
   data () {
     return {
-      emptyForm,
-      fullForm,
-      appData,
+      emptyForm: data.emptyForm,
+      fullForm: data.fullForm,
+      appData: data.appData,
       components: this.$options.components,
       isEmptyFormPopulated: false,
       isFullFormPopulated: false,
       isPropertyClicked: false,
     }
-  },
-
-  created () {
-    console.log()
-  },
-
-  mounted () {
-    console.log()
   },
 
   methods: {
@@ -475,14 +426,8 @@ export default {
       }
     },
     onInfoSubmit (application) {
-      console.log('triggerred onInfoSubmit')
-      console.log(application)
     },
     onDelete () {
-      console.log('triggerred onDelete')
-    },
-    editApp (a) {
-      console.log(a)
     },
   },
 }
@@ -493,25 +438,29 @@ export default {
   margin-left: -30px;
 }
 
-.m-ul {
-  list-style-type: none;
-  margin-left: -40px;
-  margin-bottom: -3px;
+.forms:hover,
+.form-container {
+  background-color: rgb(231, 231, 231);
+}
+
+.form,
+.form-container {
+  border-radius: 5px;
 }
 
 .forms {
   cursor: pointer;
-  border-radius: 5px;
   padding: 5px 0 5px 5px;
-
-  &:hover {
-    background-color: rgb(231, 231, 231);
-  }
 }
 
 .form-container {
-  background-color: rgb(231, 231, 231);
   border-radius: 5px;
   margin-bottom: 5px;
+
+  .m-ul {
+    list-style-type: none;
+    margin-left: -40px;
+    margin-bottom: -3px;
+  }
 }
 </style>
