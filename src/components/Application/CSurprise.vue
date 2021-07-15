@@ -16,7 +16,7 @@
             >
               <li
                 v-if="index !== Object.keys(components).length - 1"
-                class="ml-list mt-0"
+                class="ml-list h5 mt-0"
               >
                 - {{ value.name }}
               </li>
@@ -31,7 +31,7 @@
             :application="appData.application"
             :processing="appData.info.processing"
             :success="appData.info.success"
-            :can-create="appData.canCreate.canCreate"
+            :can-create="appData.otherProperties.canCreate"
             @submit="onInfoSubmit"
             @delete="onDelete"
           />
@@ -44,7 +44,7 @@
             :application="emptyForm.application"
             :processing="emptyForm.info.processing"
             :success="emptyForm.info.success"
-            :can-create="emptyForm.canCreate.canCreate"
+            :can-create="emptyForm.otherProperties.canCreate"
             @submit="onInfoSubmit"
             @delete="onDelete"
           />
@@ -57,7 +57,7 @@
             :application="fullForm.application"
             :processing="fullForm.info.processing"
             :success="fullForm.info.success"
-            :can-create="fullForm.canCreate.canCreate"
+            :can-create="fullForm.otherProperties.canCreate"
             @submit="onInfoSubmit"
             @delete="onDelete"
           />
@@ -81,25 +81,65 @@
             <ul
               v-for="(value, key) in emptyForm"
               :key="key"
-              class="m-ul"
+              class="m-ul h5"
             >
-              <h6>{{ key }}: {</h6>
+              <h5>{{ key }}: {</h5>
               <li
                 v-for="(v, k, i) in value"
                 :key="i"
               >
-                <label
-                  class="pl-2"
+                <div
+                  v-if="!isPropertyClicked"
                 >
-                  {{ k }}:
-                </label>
-                <span
-                  class="text-secondary"
+                  <label
+                    class="pl-2"
+                  >
+                    {{ k }}:
+                  </label>
+                  <span
+                    class="text-secondary"
+                    @click="editProperty"
+                  >
+                    {{ v }}
+                  </span>
+                </div>
+                <div
+                  v-else
                 >
-                  {{ v }}
-                </span>
+                  <div
+                    v-if="typeof(v) === 'boolean'"
+                  >
+                    <label
+                      class="h5"
+                    >
+                      {{ k }}:
+                    </label>
+                    <button
+                      class="btn btn-light text-white ml-2 mb-2"
+                      style="background-color: rgb(175, 175, 175)"
+                      :value="v"
+                      @click="update(value, k, v)"
+                    >
+                      {{ v }}
+                    </button>
+                  </div>
+                  <div
+                    v-else
+                  >
+                    <label
+                      class="h5"
+                    >
+                      {{ k }}:
+                    </label>
+                    <input
+                      class="ml-2 pl-1"
+                      :value="v"
+                      @input="update(value, k, $event.target.value)"
+                    >
+                  </div>
+                </div>
               </li>
-              <h6>}</h6>
+              <h5>}</h5>
             </ul>
           </div>
           <h5
@@ -115,23 +155,65 @@
             <ul
               v-for="(value, key) in fullForm"
               :key="key"
-              class="m-ul"
+              class="m-ul h5"
             >
-              <h6>{{ key }}: {</h6>
+              <h5>{{ key }}: {</h5>
               <li
                 v-for="(v, k, i) in value"
                 :key="i"
               >
-                <label
-                  class="pl-2"
-                >{{ k }}:</label>
-                <span
-                  class="text-secondary"
+                <div
+                  v-if="!isPropertyClicked"
                 >
-                  {{ v }}
-                </span>
+                  <label
+                    class="pl-2"
+                  >
+                    {{ k }}:
+                  </label>
+                  <span
+                    class="text-secondary"
+                    @click="editProperty"
+                  >
+                    {{ v }}
+                  </span>
+                </div>
+                <div
+                  v-else
+                >
+                  <div
+                    v-if="typeof(v) === 'boolean'"
+                  >
+                    <label
+                      class="h5"
+                    >
+                      {{ k }}:
+                    </label>
+                    <button
+                      class="btn btn-light text-white ml-2 mb-2"
+                      style="background-color: rgb(175, 175, 175)"
+                      :value="v"
+                      @click="update(value, k, v)"
+                    >
+                      {{ v }}
+                    </button>
+                  </div>
+                  <div
+                    v-else
+                  >
+                    <label
+                      class="h5"
+                    >
+                      {{ k }}:
+                    </label>
+                    <input
+                      class="ml-2 pl-1"
+                      :value="v"
+                      @input="update(value, k, $event.target.value)"
+                    >
+                  </div>
+                </div>
               </li>
-              <h6>}</h6>
+              <h5>}</h5>
             </ul>
           </div>
         </b-col>
@@ -149,13 +231,39 @@
               <li
                 v-for="(v, k) in value"
                 :key="k"
+                class="mb-1"
               >
-                <label>{{ k }}:</label>
-                <input
-                  class="ml-2 pl-1"
-                  :value="v"
-                  @input="update('name', $event.target.value)"
+                <div
+                  v-if="typeof(v) === 'boolean'"
                 >
+                  <label
+                    class="h5"
+                  >
+                    {{ k }}:
+                  </label>
+                  <button
+                    class="btn btn-light text-white ml-2 mb-2"
+                    style="background-color: rgb(175, 175, 175)"
+                    :value="v"
+                    @click="update(value, k, v)"
+                  >
+                    {{ v }}
+                  </button>
+                </div>
+                <div
+                  v-else
+                >
+                  <label
+                    class="h5"
+                  >
+                    {{ k }}:
+                  </label>
+                  <input
+                    class="ml-2 pl-1"
+                    :value="v"
+                    @input="update(value, k, $event.target.value)"
+                  >
+                </div>
               </li>
             </ul>
           </div>
@@ -171,13 +279,39 @@
               <li
                 v-for="(v, k) in value"
                 :key="k"
+                class="mb-1"
               >
-                <label>{{ k }}:</label>
-                <input
-                  class="ml-2 pl-1"
-                  :value="v"
-                  @input="update('name', $event.target.value)"
+                <div
+                  v-if="typeof(v) === 'boolean'"
                 >
+                  <label
+                    class="h5"
+                  >
+                    {{ k }}:
+                  </label>
+                  <button
+                    class="btn btn-light text-white ml-2 mb-2"
+                    style="background-color: rgb(175, 175, 175)"
+                    :value="v"
+                    @click="update(value, k, v)"
+                  >
+                    {{ v }}
+                  </button>
+                </div>
+                <div
+                  v-else
+                >
+                  <label
+                    class="h5"
+                  >
+                    {{ k }}:
+                  </label>
+                  <input
+                    class="ml-2 pl-1"
+                    :value="v"
+                    @input="update(value, k, $event.target.value)"
+                  >
+                </div>
               </li>
             </ul>
           </div>
@@ -193,13 +327,39 @@
               <li
                 v-for="(v, k) in value"
                 :key="k"
+                class="mb-1"
               >
-                <label>{{ k }}:</label>
-                <input
-                  class="ml-2 pl-1"
-                  :value="v"
-                  @input="update('name', $event.target.value)"
+                <div
+                  v-if="typeof(v) === 'boolean'"
                 >
+                  <label
+                    class="h5"
+                  >
+                    {{ k }}:
+                  </label>
+                  <button
+                    class="btn btn-light text-white ml-2 mb-2"
+                    style="background-color: rgb(175, 175, 175)"
+                    :value="v"
+                    @click="update(value, k, v)"
+                  >
+                    {{ v }}
+                  </button>
+                </div>
+                <div
+                  v-else
+                >
+                  <label
+                    class="h5"
+                  >
+                    {{ k }}:
+                  </label>
+                  <input
+                    class="ml-2 pl-1"
+                    :value="v"
+                    @input="update(value, k, $event.target.value)"
+                  >
+                </div>
               </li>
             </ul>
           </div>
@@ -215,9 +375,7 @@ import CApplicationEditorInfo from './CApplicationEditorInfo.vue'
 const emptyForm = {
   application: {
     applicationID: '0',
-    canDeleteApplication: false,
-    canUpdateApplication: false,
-    createdAt: '',
+    createdAt: '0000-00-00T00:00:00Z',
     enabled: false,
     name: '',
   },
@@ -225,7 +383,7 @@ const emptyForm = {
     processing: false,
     success: false,
   },
-  canCreate: {
+  otherProperties: {
     canCreate: false,
   },
 }
@@ -233,8 +391,6 @@ const emptyForm = {
 const fullForm = {
   application: {
     applicationID: '234900176853008386',
-    canDeleteApplication: false,
-    canUpdateApplication: true,
     createdAt: '2021-06-09T12:03:36Z',
     enabled: true,
     name: 'Low Code',
@@ -243,26 +399,26 @@ const fullForm = {
     processing: false,
     success: false,
   },
-  canCreate: {
+  otherProperties: {
     canCreate: true,
   },
 }
 
 const appData = {
+  // can hide delete button
   application: {
+    // can hide delete button
     applicationID: '234900176853008386',
-    canDeleteApplication: false,
-    canGrant: true,
-    canUpdateApplication: true,
     createdAt: '2021-06-09T12:03:36Z',
-    enabled: true,
+    enabled: false,
     name: 'Low Code',
   },
   info: {
     processing: false,
     success: false,
   },
-  canCreate: {
+  otherProperties: {
+    // for submit button
     canCreate: true,
   },
 }
@@ -275,34 +431,34 @@ export default {
 
   data () {
     return {
+      emptyForm,
+      fullForm,
       appData,
       components: this.$options.components,
       isEmptyFormPopulated: false,
       isFullFormPopulated: false,
-      emptyForm,
-      fullForm,
+      isPropertyClicked: false,
     }
-  },
-
-  computed: {
-    app: {
-      get () {
-        return this.application
-      },
-
-      set (a) {
-        this.$emit('update:application', a)
-      },
-    },
   },
 
   created () {
     console.log()
   },
 
+  mounted () {
+    console.log()
+  },
+
   methods: {
-    update (key, value) {
-      this.$emit('input', { ...this.value, [key]: value })
+    update (objectName, propertyName, value) {
+      if (typeof (value) === 'boolean') {
+        value = !value
+      }
+
+      this.$set(objectName, propertyName, value)
+    },
+    editProperty () {
+      this.isPropertyClicked = !this.isPropertyClicked
     },
     populateEmptyForm () {
       this.isEmptyFormPopulated = !this.isEmptyFormPopulated
@@ -349,7 +505,7 @@ export default {
   padding: 5px 0 5px 5px;
 
   &:hover {
-    background-color: rgb(228, 228, 228);
+    background-color: rgb(231, 231, 231);
   }
 }
 
